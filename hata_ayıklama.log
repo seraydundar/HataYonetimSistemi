@@ -391,3 +391,5 @@ Forbidden: /api/errors/
 Forbidden: /api/errors/
 Forbidden: /api/errors/
 Forbidden: /api/errors/
+Forbidden: /api/errors/
+Not Found: /api/users/
