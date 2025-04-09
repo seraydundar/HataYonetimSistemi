@@ -26,7 +26,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'channels',     # Django Channels (WebSocket Desteği)
     'accounts',     # Kullanıcı işlemleri için oluşturduğumuz app
-    
+    'errors',
 ]
 
 TEMPLATES = [
@@ -83,7 +83,7 @@ CHANNEL_LAYERS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'hata_yakalama',
+        'NAME': 'hata_ayiklama',
         'USER': 'postgres',
         'PASSWORD': '1963',
         'HOST': 'localhost',
@@ -139,6 +139,13 @@ CACHES = {
         'OPTIONS': {'CLIENT_CLASS': 'django_redis.client.DefaultClient'},
     }
 }
+
+# settings.py
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
 
 # Ek olarak session cookie ayarları:
 SESSION_COOKIE_NAME = 'sessionid'

@@ -1,34 +1,25 @@
 # accounts/views.py
-
+from django.conf import settings
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
-from django.contrib.auth import authenticate, login
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import CustomUser
 from .serializers import CustomUserSerializer
 
 class RegisterView(generics.CreateAPIView):
-    """
-    Kullanıcı kayıt view.
-    POST /api/accounts/register/
-    Gövde: { "username": <str>, "email": <str>, "password": <str> }
-    """
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
     permission_classes = [AllowAny]
 
-@csrf_exempt
+@csrf_exempt  # Bu decorator'ı diğerlerinin dışına almamız gerekecek.
 @api_view(['POST'])
+@authentication_classes([])
 @permission_classes([AllowAny])
 def custom_login_view(request):
-    """
-    Kullanıcı giriş view.
-    POST /api/accounts/login/
-    Gövde: { "username": <str>, "password": <str> }
-    """
     username = request.data.get('username')
     password = request.data.get('password')
 
@@ -45,7 +36,6 @@ def custom_login_view(request):
             status=status.HTTP_401_UNAUTHORIZED
         )
 
-    # Kullanıcı doğrulandı, session'a ekleyelim.
     login(request, user)
     return Response(
         {
@@ -55,3 +45,18 @@ def custom_login_view(request):
         },
         status=status.HTTP_200_OK
     )
+
+# Logout view için önerilen yapı:
+@api_view(['POST'])
+@authentication_classes([])
+@permission_classes([AllowAny])
+def custom_logout_view(request):
+    logout(request)
+    response = Response({"message": "Çıkış başarılı."}, status=status.HTTP_200_OK)
+    # Session çerezini temizlemek için
+    response.delete_cookie(settings.SESSION_COOKIE_NAME)
+    return response
+
+custom_logout_view = csrf_exempt(custom_logout_view)
+
+
