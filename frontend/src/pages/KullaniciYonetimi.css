@@ -1,0 +1,265 @@
+/* Genel Stil */
+* {
+  box-sizing: border-box;
+}
+
+.kullanici-yonetimi-container {
+  padding: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.kullanici-yonetimi-container h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 32px;
+  color: #2c3e50;
+}
+
+/* Sekme Stilleri */
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  background-color: #2980b9;
+  color: #fff;
+  padding: 10px 20px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.tabs button.active {
+  background-color: #3498db;
+  font-weight: bold;
+}
+
+/* Kullanıcı Tablosu */
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+}
+
+.user-table th,
+.user-table td {
+  padding: 12px 15px;
+  border: 1px solid #e0e0e0;
+  text-align: left;
+  font-size: 14px;
+}
+
+.user-table th {
+  background-color: #2980b9;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.user-table tr:nth-child(even) {
+  background-color: #f7f7f7;
+}
+
+.user-table tr:hover {
+  background-color: #ecf0f1;
+}
+
+/* İşlem Butonları */
+.action-btn {
+  margin-right: 5px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #fff;
+  font-size: 13px;
+  transition: opacity 0.3s ease;
+}
+
+.view-btn {
+  background-color: #17a2b8;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+}
+
+.update-btn {
+  background-color: #f39c12;
+}
+
+.errors-btn {
+  background-color: #8e44ad;
+}
+
+.action-btn:hover {
+  opacity: 0.85;
+}
+
+/* Güncelleme Formu */
+.edit-user-form {
+  background-color: #f9f9f9;
+  padding: 20px 25px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  margin-bottom: 30px;
+}
+
+.edit-user-form h2 {
+  margin-top: 0;
+  color: #2c3e50;
+}
+
+.edit-user-form label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #34495e;
+}
+
+.edit-user-form input,
+.edit-user-form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Yeni Kullanıcı Ekleme Formu */
+.new-user-form {
+  background-color: #f9f9f9;
+  padding: 20px 25px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+}
+
+.new-user-form h2 {
+  margin-top: 0;
+  color: #2c3e50;
+}
+
+.new-user-form form label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #34495e;
+}
+
+.new-user-form form input,
+.new-user-form form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.new-user-form form button {
+  background-color: #28a745;
+  color: #fff;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.new-user-form form button:hover {
+  background-color: #218838;
+}
+
+/* Hata Kayıtları Modalı */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 25px 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.modal-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.modal-content th,
+.modal-content td {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.modal-content th {
+  background-color: #3498db;
+  color: #fff;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.modal-content tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.modal-content button {
+  background-color: #e74c3c;
+  color: #fff;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.modal-content button:hover {
+  background-color: #c0392b;
+}

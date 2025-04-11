@@ -1,0 +1,67 @@
+/* Sidebar ana kapsayıcı */
+.sidebar {
+  position: fixed;         /* Sayfada sabit kalsın */
+  top: 0;
+  left: 0;
+  width: 220px;            /* Sidebar genişliği */
+  height: 100vh;           /* Tam yükseklik */
+  background-color: #f5f5f5;
+  padding: 20px;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1); /* Hafif kenar gölgesi */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-y: auto;        /* İçerik taşarsa dikey kaydırma */
+}
+
+/* Sidebar içerisindeki liste */
+.sidebar ul {
+  list-style: none; /* Bullet noktaları veya kutucukları kaldır */
+  margin: 0;
+  padding: 0;
+}
+
+/* Liste elemanları */
+.sidebar li {
+  margin: 10px 0;
+}
+
+/* Linklerin düzeni */
+.sidebar a {
+  display: block;          /* Tüm satırı kapsasın */
+  text-decoration: none;
+  color: #333;
+  padding: 10px 12px;      /* Tıklanabilir alanı genişletir */
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+/* Link üzerine gelince */
+.sidebar a:hover {
+  background-color: #eaeaea;
+}
+
+/* Aktif link için (React Router kullanıyorsanız "active" sınıfı) */
+.sidebar a.active {
+  background-color: #007BFF;
+  color: #fff;
+}
+
+/* Çıkış Yap butonu (veya başka butonlar) */
+.sidebar button {
+  background-color: transparent;
+  border: none;
+  color: #333;
+  font-size: 1rem;
+  margin-top: auto;        /* Butonu alt tarafa yapıştırmak isterseniz "auto" kullanın */
+  cursor: pointer;
+  padding: 10px 12px;
+  text-align: left;
+  transition: background-color 0.3s ease;
+  border-radius: 4px;
+}
+
+.sidebar button:hover {
+  background-color: #eaeaea;
+}
+
