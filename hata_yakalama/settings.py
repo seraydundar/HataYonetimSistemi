@@ -5,15 +5,15 @@ Django settings for hata_Ayıklama project.
 from pathlib import Path
 from datetime import timedelta
 
-# Proje kök dizini
+# Ek: CORS default headers import’u (bunu eklemen önemli!)
+from corsheaders.defaults import default_headers
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Güvenlik Ayarları
 SECRET_KEY = 'django-insecure-cxzdzr-hi^d(im3ml&g47!xch=7!qqbi2m$mpt9cx^)i+zl&ic'
 DEBUG = True
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
 
-# Uygulamalar
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -25,9 +25,23 @@ INSTALLED_APPS = [
     'corsheaders',  # CORS için
     'rest_framework',
     'channels',     # Django Channels (WebSocket Desteği)
-    'accounts',     # Kullanıcı işlemleri için oluşturduğumuz app
+    'accounts',     # Kullanıcı işlemleri için
     'errors',
 ]
+
+MIDDLEWARE = [
+    # CORS middleware'ini en üst sıralarda tutmak önerilir
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+ROOT_URLCONF = 'hata_yakalama.urls'
 
 TEMPLATES = [
     {
@@ -45,32 +59,33 @@ TEMPLATES = [
     },
 ]
 
-ROOT_URLCONF = 'hata_yakalama.urls'
+# ------------------------- CORS Ayarları -------------------------
 
-# Middleware (CORS en üstte olması gerek)
-MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
-
-# CORS Ayarları
+# Geliştirme ortamında tüm origin’lere izin veriyorsak:
 CORS_ALLOW_ALL_ORIGINS = True
+
+# Tarayıcıda cookie/token taşınacaksa:
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_METHODS = ["GET", "POST", "PATCH", "DELETE", "OPTIONS"]
-CORS_ALLOW_HEADERS = [
-    'authorization',
-    'content-type',
-    'x-requested-with',
-    'accept',
+
+# Kullanacağımız HTTP metotları
+CORS_ALLOW_METHODS = [
+    "GET",
+    "POST",
+    "PATCH",
+    "DELETE",
+    "OPTIONS",
 ]
 
-# WebSocket (Channels) Yapılandırması: Redis kullanımı
+# Preflight isteğinde kabul edilecek header’lar.
+# Burada default_headers’a ek olarak 'x-csrftoken' ekliyoruz.
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'x-csrftoken',
+    # istersen 'X-CSRFToken' da ekleyebilirsin
+]
+
+# ---------------------------------------------------------------
+
+# WebSocket (Channels) Yapılandırması: Redis
 ASGI_APPLICATION = "hata_yakalama.asgi.application"
 CHANNEL_LAYERS = {
     "default": {
@@ -91,7 +106,6 @@ DATABASES = {
     }
 }
 
-# REST Framework Ayarları
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -102,7 +116,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-# JWT ayarları (varsa)
+# JWT ayarları (kullanıyorsan)
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=31),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
@@ -113,11 +127,9 @@ SIMPLE_JWT = {
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
-# Statik Dosyalar
 STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Loglama
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -127,11 +139,14 @@ LOGGING = {
     },
     'loggers': {
         'django': {'handlers': ['console', 'file'], 'level': 'INFO'},
-        'hata_ayıklama': {'handlers': ['console', 'file'], 'level': 'DEBUG', 'propagate': True},
+        'hata_ayıklama': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True
+        },
     },
 }
 
-# Cache (Redis) Ayarları
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
@@ -140,14 +155,13 @@ CACHES = {
     }
 }
 
-# settings.py
+# React uygulamasının CSRF koruması için güvenilir origin ayarı
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
 
-
-# Ek olarak session cookie ayarları:
+# Session cookie ayarları
 SESSION_COOKIE_NAME = 'sessionid'
 SESSION_COOKIE_SAMESITE = 'Lax'
 SESSION_COOKIE_SECURE = False

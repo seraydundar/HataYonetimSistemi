@@ -13,3 +13,6 @@ class ErrorReport(models.Model):
 
     def __str__(self):
         return self.baslik
+
+
+

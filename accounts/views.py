@@ -1,7 +1,7 @@
 # accounts/views.py
 from django.conf import settings
 from rest_framework import generics, status
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from django.contrib.auth import authenticate, login, logout
@@ -46,7 +46,6 @@ def custom_login_view(request):
         status=status.HTTP_200_OK
     )
 
-# Logout view için önerilen yapı:
 @api_view(['POST'])
 @authentication_classes([])
 @permission_classes([AllowAny])
@@ -59,4 +58,15 @@ def custom_logout_view(request):
 
 custom_logout_view = csrf_exempt(custom_logout_view)
 
+# Aşağıdaki view'ler admin yetkisine sahip kullanıcıların mevcut kullanıcıları listelemesi,
+# detayını görüntülemesi, güncellemesi ve silmesi işlemleri için eklenmiştir.
 
+class CustomUserList(generics.ListAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
+    permission_classes = [IsAdminUser]
+
+class CustomUserDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
+    permission_classes = [IsAdminUser]
