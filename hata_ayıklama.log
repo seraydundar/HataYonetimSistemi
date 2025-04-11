@@ -806,3 +806,23 @@ Bad Request: /api/accounts/register/
 Bad Request: /api/accounts/9/
 Bad Request: /api/accounts/9/
 Unauthorized: /api/accounts/login/
+Forbidden: /api/accounts/
+Forbidden: /api/accounts/
+Forbidden: /api/accounts/
+Forbidden: /api/accounts/
+Forbidden: /api/accounts/
+Forbidden: /api/accounts/
+Forbidden: /api/accounts/
+Forbidden: /api/accounts/
+Forbidden: /api/accounts/
+Forbidden: /api/accounts/
+Forbidden: /api/accounts/
+Forbidden: /api/accounts/
+Forbidden: /api/accounts/
+Forbidden: /api/accounts/
+Forbidden: /api/accounts/
+Forbidden: /api/accounts/
+Forbidden: /api/accounts/
+Forbidden: /api/accounts/
+Forbidden: /api/accounts/
+Forbidden: /api/accounts/

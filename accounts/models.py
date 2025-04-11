@@ -16,6 +16,8 @@ class CustomUser(AbstractUser):
     USERNAME_FIELD = 'username'        # Artık kullanıcılar email ile giriş yapar
     REQUIRED_FIELDS = []  # USERNAME_FIELD olan username REQUIRED_FIELDS listesinden kaldırıldı
 
+
+
     class Meta:
         db_table = 'accounts_customuser'
 
