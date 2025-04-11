@@ -1,4 +1,5 @@
 # errors/views.py
+
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from .models import ErrorReport
@@ -21,8 +22,8 @@ class ErrorReportListCreate(generics.ListCreateAPIView):
         # Diğer kullanıcılar için, sadece kendi oluşturdukları hata raporlarını döndür.
         return ErrorReport.objects.filter(user=self.request.user)
 
-def perform_create(self, serializer):
-    serializer.save(user=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class ErrorReportDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -35,4 +36,4 @@ class ErrorReportDetail(generics.RetrieveUpdateDestroyAPIView):
         if self.request.user.is_superuser:
             return ErrorReport.objects.all()
         # Diğer durumlarda yalnızca kendi hatalarını döndür
-        return ErrorReport.objects.filter(user=self.request.user) 
+        return ErrorReport.objects.filter(user=self.request.user)

@@ -1,5 +1,3 @@
-# accounts/models.py
-
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -16,9 +14,7 @@ class CustomUser(AbstractUser):
     # Django'da kimlik doğrulaması için hangi alanın kullanılacağını belirtir.
     # Eğer username yerine email ile login yapılmasını istiyorsanız:
     USERNAME_FIELD = 'username'        # Artık kullanıcılar email ile giriş yapar
-    REQUIRED_FIELDS = ['username']   # AbstractUser default olarak username bekler,
-                                     # ama biz email'i ana alan yaptığımız için
-                                     # username'i buraya ekliyoruz
+    REQUIRED_FIELDS = []  # USERNAME_FIELD olan username REQUIRED_FIELDS listesinden kaldırıldı
 
     class Meta:
         db_table = 'accounts_customuser'

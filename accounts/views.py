@@ -42,6 +42,7 @@ def custom_login_view(request):
             "message": "Giriş başarılı.",
             "user_id": user.id,
             "username": user.username,
+            
         },
         status=status.HTTP_200_OK
     )

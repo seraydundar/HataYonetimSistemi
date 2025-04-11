@@ -22,6 +22,7 @@ class ErrorReportSerializer(serializers.ModelSerializer):
             'oncelik',
             'durum',
             'olusturulma_tarihi',
+            'yanit',
         ]
         read_only_fields = ('olusturulma_tarihi',)
 

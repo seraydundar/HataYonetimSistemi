@@ -10,6 +10,8 @@ class ErrorReport(models.Model):
     oncelik = models.CharField(max_length=20, default='Düşük')
     durum = models.CharField(max_length=20, default='Beklemede')
     olusturulma_tarihi = models.DateTimeField(auto_now_add=True)
+    yanit = models.TextField(null=True, blank=True)  # Yeni alan: Yanıt
+
 
     def __str__(self):
         return self.baslik
