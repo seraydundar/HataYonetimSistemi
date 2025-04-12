@@ -14,6 +14,18 @@
   overflow-y: auto;        /* İçerik taşarsa dikey kaydırma */
 }
 
+/* Icon ve metin hizalaması için */
+.sidebar li button,
+.sidebar li a {
+  display: flex;
+  align-items: center;
+}
+
+/* Tüm ikonlar için */
+.sidebar svg {
+  margin-right: 8px;
+}
+
 /* Sidebar içerisindeki liste */
 .sidebar ul {
   list-style: none; /* Bullet noktaları veya kutucukları kaldır */
@@ -28,7 +40,8 @@
 
 /* Linklerin düzeni */
 .sidebar a {
-  display: block;          /* Tüm satırı kapsasın */
+  display: flex;          /* Tüm satırı kapsasın ve flex düzeni kullansın */
+  align-items: center;
   text-decoration: none;
   color: #333;
   padding: 10px 12px;      /* Tıklanabilir alanı genişletir */
@@ -47,16 +60,18 @@
   color: #fff;
 }
 
-/* Çıkış Yap butonu (veya başka butonlar) */
+/* Çıkış Yap ve diğer butonlar */
 .sidebar button {
   background-color: transparent;
   border: none;
   color: #333;
   font-size: 1rem;
-  margin-top: auto;        /* Butonu alt tarafa yapıştırmak isterseniz "auto" kullanın */
+  margin-top: auto;        /* Butonu alt tarafa yapıştırmak için "auto" */
   cursor: pointer;
   padding: 10px 12px;
   text-align: left;
+  display: flex;
+  align-items: center;
   transition: background-color 0.3s ease;
   border-radius: 4px;
 }
@@ -64,4 +79,3 @@
 .sidebar button:hover {
   background-color: #eaeaea;
 }
-

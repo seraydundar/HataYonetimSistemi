@@ -3,7 +3,15 @@ import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import api from '../services/api';
-import { FaHome, FaExclamationTriangle, FaUsers, FaComments, FaSignOutAlt } from 'react-icons/fa';
+import { 
+  FaHome, 
+  FaExclamationTriangle, 
+  FaUsers, 
+  FaComments, 
+  FaSignOutAlt,
+  FaSignInAlt, // Giriş yap butonu için
+  FaUserPlus   // Kayıt ol butonu için
+} from 'react-icons/fa';
 import './Sidebar.css';
 
 const Sidebar = () => {
@@ -44,6 +52,28 @@ const Sidebar = () => {
     navigate('/hata-yakalama');
   };
 
+  // Eğer kullanıcı giriş yapmamışsa sadece Giriş Yap ve Kayıt Ol seçeneklerini ikonlarla göster.
+  if (!user) {
+    return (
+      <nav className="sidebar">
+        <ul>
+          <li>
+            <button onClick={() => navigate('/login')}>
+              <FaSignInAlt style={{ marginRight: '8px' }} />
+              Giriş Yap
+            </button>
+          </li>
+          <li>
+            <button onClick={() => navigate('/register')}>
+              <FaUserPlus style={{ marginRight: '8px' }} />
+              Kayıt Ol
+            </button>
+          </li>
+        </ul>
+      </nav>
+    );
+  }
+
   return (
     <nav className="sidebar">
       <ul>
@@ -72,7 +102,7 @@ const Sidebar = () => {
           <li>
             <button onClick={() => navigate('/hata-bildirim')}>
               <FaExclamationTriangle style={{ marginRight: '8px' }} />
-              Hata Bildirim
+              Hata Bildir
             </button>
           </li>
         )}
@@ -83,14 +113,12 @@ const Sidebar = () => {
             Sohbet
           </button>
         </li>
-        {user && (
-          <li>
-            <button onClick={handleLogout}>
-              <FaSignOutAlt style={{ marginRight: '8px' }} />
-              Çıkış Yap
-            </button>
-          </li>
-        )}
+        <li>
+          <button onClick={handleLogout}>
+            <FaSignOutAlt style={{ marginRight: '8px' }} />
+            Çıkış Yap
+          </button>
+        </li>
       </ul>
     </nav>
   );

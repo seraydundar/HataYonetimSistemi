@@ -1,5 +1,5 @@
 from django.conf import settings
-from rest_framework import generics, status
+from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from django.contrib.auth import authenticate, login, logout
@@ -7,13 +7,11 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import CustomUser
 from .serializers import CustomUserSerializer
-from .permissions import IsSuperUser
 
 class RegisterView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
     permission_classes = []
-
 
 @csrf_exempt
 @api_view(['POST'])
@@ -43,7 +41,6 @@ def custom_login_view(request):
         status=status.HTTP_200_OK
     )
 
-
 @api_view(['POST'])
 @authentication_classes([])
 @permission_classes([])
@@ -55,18 +52,20 @@ def custom_logout_view(request):
 
 custom_logout_view = csrf_exempt(custom_logout_view)
 
-
-# Yönetici için, admin olmayan kullanıcıları listeleyen view.
-# Modelinizde "role" alanı yerine is_superuser kullanılarak filtreleme yapılır.
+# Kullanıcı listesini döndüren view. Artık hem normal kullanıcılar hem de superuser erişebilecek.
+# Normal kullanıcılar yalnızca admin (is_superuser=True) kullanıcılarını görecek.
 class UserListView(generics.ListAPIView):
     serializer_class = CustomUserSerializer
-    permission_classes = [IsSuperUser]
+    permission_classes = [permissions.IsAuthenticated]  # Sadece kimliği doğrulanmış kullanıcılar erişebilir
 
     def get_queryset(self):
-        return CustomUser.objects.all()
-
+        user = self.request.user
+        if user.is_superuser:
+            return CustomUser.objects.all()
+        else:
+            return CustomUser.objects.filter(is_superuser=True)
 
 class CustomUserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
-    permission_classes = [IsSuperUser]
+    permission_classes = [permissions.IsAuthenticated]

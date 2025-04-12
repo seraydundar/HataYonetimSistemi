@@ -81,23 +81,6 @@ const HataYonetimi = () => {
     setFilteredErrors(filtered);
   };
 
-  // Tarihe göre sıralama fonksiyonu
-  const handleSort = () => {
-    const sorted = [...filteredErrors].sort((a, b) => {
-      const parseDate = (str) => {
-        if (!str) return new Date('1970-01-01');
-        const [gun, ay, yil] = str.split('.');
-        return new Date(`${yil}-${ay}-${gun}`);
-      };
-      return parseDate(a.olusturulma_tarihi) - parseDate(b.olusturulma_tarihi);
-    });
-    setFilteredErrors(sorted);
-  };
-
-  const handleOther = () => {
-    alert('Diğer butonuna tıklandı! Burada ekstra işlemler yapabilirsiniz.');
-  };
-
   // Modal işlemleri
   const handleView = (id) => {
     const err = errors.find((item) => item.id === id);
@@ -256,14 +239,6 @@ const HataYonetimi = () => {
         <button className="filter-btn" onClick={handleFilter}>
           <FaFilter style={{ marginRight: '5px' }} />
           FİLTRELE
-        </button>
-        <button className="sort-btn" onClick={handleSort}>
-          <FaSort style={{ marginRight: '5px' }} />
-          SIRALA
-        </button>
-        <button className="other-btn" onClick={handleOther}>
-          <FaEllipsisH style={{ marginRight: '5px' }} />
-          Diğer
         </button>
       </div>
 

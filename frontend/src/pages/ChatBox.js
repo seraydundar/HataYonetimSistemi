@@ -20,7 +20,6 @@ const ChatBox = ({ conversation }) => {
 
   useEffect(() => {
     if (!conversation) return;
-
     const wsUrl = `ws://localhost:8000/ws/chat/${conversation.id}/`;
     socket = new WebSocket(wsUrl);
 
@@ -64,6 +63,11 @@ const ChatBox = ({ conversation }) => {
     setNewMessage("");
   };
 
+  // Kullanıcının bu sohbete katılımcı olup olmadığını kontrol ediyoruz.
+  const isParticipant = conversation &&
+                        conversation.participants &&
+                        conversation.participants.some(p => p.id === user.id);
+
   return (
     <div className="chat-box">
       {(!conversation || !conversation.participants) ? (
@@ -83,15 +87,21 @@ const ChatBox = ({ conversation }) => {
               </div>
             ))}
           </div>
-          <div className="chat-input">
-            <input
-              type="text"
-              value={newMessage}
-              onChange={e => setNewMessage(e.target.value)}
-              placeholder="Mesajınızı yazın..."
-            />
-            <button onClick={sendMessage}>Gönder</button>
-          </div>
+          { isParticipant ? (
+            <div className="chat-input">
+              <input
+                type="text"
+                value={newMessage}
+                onChange={e => setNewMessage(e.target.value)}
+                placeholder="Mesajınızı yazın..."
+              />
+              <button onClick={sendMessage}>Gönder</button>
+            </div>
+          ) : (
+            <div className="chat-input-disabled">
+              <p>Bu sohbet yalnızca görüntüleniyor. Mesaj gönderme yetkiniz yok.</p>
+            </div>
+          )}
         </>
       )}
     </div>

@@ -136,8 +136,16 @@ const KullaniciYonetimi = () => {
 
   const handleNewUserSubmit = async (e) => {
     e.preventDefault();
+    const newUserData = {
+      username: newUser.username,
+      first_name: newUser.firstName, // anahtar adı düzenlendi
+      last_name: newUser.lastName,     // anahtar adı düzenlendi
+      email: newUser.email,
+      password: newUser.password,
+      role: newUser.role,
+    };
     try {
-      const response = await api.post('accounts/register/', newUser);
+      const response = await api.post('accounts/register/', newUserData);
       setUsers([...users, response.data]);
       setNewUser({
         username: '',
@@ -240,78 +248,6 @@ const KullaniciYonetimi = () => {
                   ))}
                 </tbody>
               </table>
-
-              {editingUser && (
-                <div className="edit-user-form">
-                  <h2>
-                    <FaEdit style={{ marginRight: '5px' }} />
-                    Kullanıcıyı Güncelle
-                  </h2>
-                  <label>
-                    Kullanıcı Adı:
-                    <input
-                      type="text"
-                      name="username"
-                      value={editData.username}
-                      onChange={handleEditChange}
-                    />
-                  </label>
-                  <label>
-                    Ad:
-                    <input
-                      type="text"
-                      name="first_name"
-                      value={editData.first_name}
-                      onChange={handleEditChange}
-                    />
-                  </label>
-                  <label>
-                    Soyad:
-                    <input
-                      type="text"
-                      name="last_name"
-                      value={editData.last_name}
-                      onChange={handleEditChange}
-                    />
-                  </label>
-                  <label>
-                    E-posta:
-                    <input
-                      type="email"
-                      name="email"
-                      value={editData.email}
-                      onChange={handleEditChange}
-                    />
-                  </label>
-                  <label>
-                    Şifre:
-                    <input
-                      type="password"
-                      name="password"
-                      value={editData.password}
-                      onChange={handleEditChange}
-                      placeholder="Yeni şifre (boş bırakılırsa güncellenmez)"
-                    />
-                  </label>
-                  <label>
-                    Admin:
-                    <input
-                      type="checkbox"
-                      name="is_superuser"
-                      checked={editData.is_superuser}
-                      onChange={handleEditChange}
-                    />
-                  </label>
-                  <button onClick={handleUpdate}>
-                    <FaEdit style={{ marginRight: '5px' }} />
-                    Güncelle
-                  </button>
-                  <button onClick={() => setEditingUser(null)}>
-                    <FaTrashAlt style={{ marginRight: '5px' }} />
-                    İptal
-                  </button>
-                </div>
-              )}
             </>
           )}
 
@@ -323,23 +259,23 @@ const KullaniciYonetimi = () => {
               </h2>
               <form onSubmit={handleNewUserSubmit}>
                 <label>
+                  Kullanıcı Adı:
+                  <input
+                    type="text"
+                    name="username"
+                    placeholder="Kullanıcı Adı"
+                    value={newUser.username}
+                    onChange={handleNewUserChange}
+                    required
+                  />
+                </label>
+                <label>
                   Ad:
                   <input
                     type="text"
                     name="firstName"
                     placeholder="Ad"
                     value={newUser.firstName}
-                    onChange={handleNewUserChange}
-                    required
-                  />
-                </label>
-                <label>
-                  Kullanıcı Adı:
-                  <input
-                    type="text"
-                    name="username"
-                    placeholder="username"
-                    value={newUser.username}
                     onChange={handleNewUserChange}
                     required
                   />
@@ -390,6 +326,91 @@ const KullaniciYonetimi = () => {
             </div>
           )}
         </>
+      )}
+
+      {/* Güncelleme formunu modal pencerede gösteriyoruz */}
+      {editingUser && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>
+              <FaEdit style={{ marginRight: '5px' }} />
+              Kullanıcıyı Güncelle
+            </h2>
+            <label>
+              Kullanıcı Adı:
+              <input
+                type="text"
+                name="username"
+                value={editData.username}
+                onChange={handleEditChange}
+                className="modal-input"
+              />
+            </label>
+            <label>
+              Ad:
+              <input
+                type="text"
+                name="first_name"
+                value={editData.first_name}
+                onChange={handleEditChange}
+                className="modal-input"
+              />
+            </label>
+            <label>
+              Soyad:
+              <input
+                type="text"
+                name="last_name"
+                value={editData.last_name}
+                onChange={handleEditChange}
+                className="modal-input"
+              />
+            </label>
+            <label>
+              E-posta:
+              <input
+                type="email"
+                name="email"
+                value={editData.email}
+                onChange={handleEditChange}
+                className="modal-input"
+              />
+            </label>
+            <label>
+              Şifre:
+              <input
+                type="password"
+                name="password"
+                value={editData.password}
+                onChange={handleEditChange}
+                placeholder="Yeni şifre (boş bırakılırsa güncellenmez)"
+                className="modal-input"
+              />
+            </label>
+            <label>
+              Admin:
+              <div className="switch-wrapper">
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    name="is_superuser"
+                    checked={editData.is_superuser}
+                    onChange={handleEditChange}
+                  />
+                  <span className="slider round"></span>
+                </label>
+              </div>
+            </label>
+            <button onClick={handleUpdate}>
+              <FaEdit style={{ marginRight: '5px' }} />
+              Güncelle
+            </button>
+            <button onClick={() => setEditingUser(null)}>
+              <FaTrashAlt style={{ marginRight: '5px' }} />
+              İptal
+            </button>
+          </div>
+        </div>
       )}
 
       {showErrorsModal && (
