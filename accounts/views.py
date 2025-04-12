@@ -1,4 +1,3 @@
-# accounts/views.py
 from django.conf import settings
 from rest_framework import generics, status
 from rest_framework.response import Response
@@ -8,12 +7,13 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import CustomUser
 from .serializers import CustomUserSerializer
-from .permissions import IsSuperUser  # Yeni oluşturduğumuz izin sınıfı
+from .permissions import IsSuperUser
 
 class RegisterView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
-    permission_classes = []  # Yeni kullanıcı kaydı için izin sınıfı gerekli değil
+    permission_classes = []
+
 
 @csrf_exempt
 @api_view(['POST'])
@@ -39,12 +39,10 @@ def custom_login_view(request):
     login(request, user)
     user_data = CustomUserSerializer(user).data
     return Response(
-        {
-            "message": "Giriş başarılı.",
-            "user": user_data
-        },
+        {"message": "Giriş başarılı.", "user": user_data},
         status=status.HTTP_200_OK
     )
+
 
 @api_view(['POST'])
 @authentication_classes([])
@@ -57,11 +55,16 @@ def custom_logout_view(request):
 
 custom_logout_view = csrf_exempt(custom_logout_view)
 
-# Yeni oluşturduğumuz özel izin sınıfını kullanarak admin erişimini kontrol ediyoruz.
-class CustomUserList(generics.ListAPIView):
-    queryset = CustomUser.objects.all()
+
+# Yönetici için, admin olmayan kullanıcıları listeleyen view.
+# Modelinizde "role" alanı yerine is_superuser kullanılarak filtreleme yapılır.
+class UserListView(generics.ListAPIView):
     serializer_class = CustomUserSerializer
     permission_classes = [IsSuperUser]
+
+    def get_queryset(self):
+        return CustomUser.objects.all()
+
 
 class CustomUserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = CustomUser.objects.all()

@@ -3,6 +3,8 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { AuthContext } from '../contexts/AuthContext';
+// react-icons'dan hata ikonunu ekliyoruz:
+import { MdErrorOutline } from 'react-icons/md';
 import './Login.css';
 
 const Login = () => {
@@ -58,7 +60,12 @@ const Login = () => {
             style={{ width: '300px', padding: '8px' }}
           />
         </div>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {error && (
+          <p style={{ color: 'red', display: 'flex', alignItems: 'center' }}>
+            <MdErrorOutline style={{ marginRight: '8px', fontSize: '1.5em' }} />
+            {error}
+          </p>
+        )}
         <button type="submit" style={{ padding: '8px 16px' }}>Giriş Yap</button>
       </form>
       <p style={{ marginTop: '10px' }}>

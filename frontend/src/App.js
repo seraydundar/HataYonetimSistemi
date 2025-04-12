@@ -6,8 +6,9 @@ import Register from './pages/Register';
 import HataYakalama from './pages/HataYakalama';
 import Sidebar from './components/Sidebar';
 import HataBildirim from './pages/HataBildirim';
-import './App.css'; // Yeni eklediğiniz genel stil dosyasını import edin
+import './App.css';
 import KullaniciYonetimi from './pages/KullaniciYonetimi';
+import ChatPage from './pages/ChatPage'; // ChatBox yerine ChatPage'i import ediyoruz
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route path="/hata-yakalama" element={<HataYakalama />} />
             <Route path="/hata-bildirim" element={<HataBildirim />} />
             <Route path="/kullanici-yonetimi" element={<KullaniciYonetimi />} />
+            <Route path="/chat" element={<ChatPage />} />
           </Routes>
         </div>
       </div>

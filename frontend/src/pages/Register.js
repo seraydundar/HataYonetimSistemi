@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../services/api';
+import { FaUserPlus } from 'react-icons/fa';
+import { MdErrorOutline } from 'react-icons/md';
 import './Register.css'; // Özel stiller varsa ekleyebilirsiniz
 
 const Register = () => {
@@ -37,7 +39,10 @@ const Register = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h2>Kayıt Ol</h2>
+      <h2 style={{ display: 'flex', alignItems: 'center' }}>
+        <FaUserPlus style={{ marginRight: '8px', fontSize: '1.5em' }} />
+        Kayıt Ol
+      </h2>
       <form onSubmit={handleRegister}>
         <div style={{ marginBottom: '10px' }}>
           <label>Kullanıcı Adı:</label><br />
@@ -89,7 +94,12 @@ const Register = () => {
             style={{ width: '300px', padding: '8px' }}
           />
         </div>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {error && (
+          <p style={{ color: 'red', display: 'flex', alignItems: 'center' }}>
+            <MdErrorOutline style={{ marginRight: '8px', fontSize: '1.5em' }} />
+            {error}
+          </p>
+        )}
         <button type="submit" style={{ padding: '8px 16px' }}>Kayıt Ol</button>
       </form>
       <p style={{ marginTop: '10px' }}>

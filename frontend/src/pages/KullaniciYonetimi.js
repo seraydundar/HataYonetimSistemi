@@ -1,6 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import api from '../services/api';
 import { AuthContext } from '../contexts/AuthContext';
+import { 
+  FaUsers, 
+  FaUserPlus, 
+  FaEdit, 
+  FaTrashAlt, 
+  FaExclamationCircle, 
+  FaEye 
+} from 'react-icons/fa';
 import './KullaniciYonetimi.css';
 
 const KullaniciYonetimi = () => {
@@ -21,7 +29,6 @@ const KullaniciYonetimi = () => {
 
   // Güncelleme için state
   const [editingUser, setEditingUser] = useState(null);
-  // Backend’de kullanılacak alan isimleri: username, first_name, last_name, email, password, is_superuser
   const [editData, setEditData] = useState({
     username: '',
     first_name: '',
@@ -167,12 +174,14 @@ const KullaniciYonetimi = () => {
           className={activeTab === "viewUsers" ? "active" : ""}
           onClick={() => setActiveTab("viewUsers")}
         >
+          <FaUsers style={{ marginRight: '5px' }} />
           Mevcut Kullanıcıları Görüntüle
         </button>
         <button 
           className={activeTab === "addUser" ? "active" : ""}
           onClick={() => setActiveTab("addUser")}
         >
+          <FaUserPlus style={{ marginRight: '5px' }} />
           Yeni Kullanıcı Ekle
         </button>
       </div>
@@ -205,13 +214,25 @@ const KullaniciYonetimi = () => {
                       <td>{u.email}</td>
                       <td>{u.is_superuser ? "Evet" : "Hayır"}</td>
                       <td>
-                        <button className="action-btn update-btn" onClick={() => handleEdit(u)}>
+                        <button 
+                          className="action-btn update-btn" 
+                          onClick={() => handleEdit(u)}
+                        >
+                          <FaEdit style={{ marginRight: '5px' }} />
                           Güncelle
                         </button>
-                        <button className="action-btn delete-btn" onClick={() => handleDelete(u.id)}>
+                        <button 
+                          className="action-btn delete-btn" 
+                          onClick={() => handleDelete(u.id)}
+                        >
+                          <FaTrashAlt style={{ marginRight: '5px' }} />
                           Sil
                         </button>
-                        <button className="action-btn errors-btn" onClick={() => handleViewErrors(u)}>
+                        <button 
+                          className="action-btn errors-btn" 
+                          onClick={() => handleViewErrors(u)}
+                        >
+                          <FaExclamationCircle style={{ marginRight: '5px' }} />
                           Hata Kayıtlarını Gör
                         </button>
                       </td>
@@ -222,7 +243,10 @@ const KullaniciYonetimi = () => {
 
               {editingUser && (
                 <div className="edit-user-form">
-                  <h2>Kullanıcıyı Güncelle</h2>
+                  <h2>
+                    <FaEdit style={{ marginRight: '5px' }} />
+                    Kullanıcıyı Güncelle
+                  </h2>
                   <label>
                     Kullanıcı Adı:
                     <input
@@ -278,8 +302,14 @@ const KullaniciYonetimi = () => {
                       onChange={handleEditChange}
                     />
                   </label>
-                  <button onClick={handleUpdate}>Güncelle</button>
-                  <button onClick={() => setEditingUser(null)}>İptal</button>
+                  <button onClick={handleUpdate}>
+                    <FaEdit style={{ marginRight: '5px' }} />
+                    Güncelle
+                  </button>
+                  <button onClick={() => setEditingUser(null)}>
+                    <FaTrashAlt style={{ marginRight: '5px' }} />
+                    İptal
+                  </button>
                 </div>
               )}
             </>
@@ -287,7 +317,10 @@ const KullaniciYonetimi = () => {
 
           {activeTab === "addUser" && (
             <div className="new-user-form">
-              <h2>Yeni Kullanıcı Ekle</h2>
+              <h2>
+                <FaUserPlus style={{ marginRight: '5px' }} />
+                Yeni Kullanıcı Ekle
+              </h2>
               <form onSubmit={handleNewUserSubmit}>
                 <label>
                   Ad:
@@ -349,7 +382,10 @@ const KullaniciYonetimi = () => {
                     <option value="kullanıcı">Kullanıcı</option>
                   </select>
                 </label>
-                <button type="submit">Yeni Kullanıcı Ekle</button>
+                <button type="submit">
+                  <FaUserPlus style={{ marginRight: '5px' }} />
+                  Yeni Kullanıcı Ekle
+                </button>
               </form>
             </div>
           )}
@@ -359,7 +395,10 @@ const KullaniciYonetimi = () => {
       {showErrorsModal && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <h2>Kullanıcının Hata Kayıtları</h2>
+            <h2>
+              <FaExclamationCircle style={{ marginRight: '5px' }} />
+              Kullanıcının Hata Kayıtları
+            </h2>
             {selectedUserErrors.length === 0 ? (
               <p>Bu kullanıcı için hata kaydı bulunamadı.</p>
             ) : (
@@ -386,7 +425,10 @@ const KullaniciYonetimi = () => {
                 </tbody>
               </table>
             )}
-            <button onClick={() => setShowErrorsModal(false)}>Kapat</button>
+            <button onClick={() => setShowErrorsModal(false)}>
+              <FaEye style={{ marginRight: '5px' }} />
+              Kapat
+            </button>
           </div>
         </div>
       )}

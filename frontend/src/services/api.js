@@ -1,7 +1,7 @@
 // src/services/api.js
 import axios from 'axios';
 
-// Django'dan gelen CSRF token'ı cookie'den çekmeye yarayan yardımcı fonksiyon
+// Django'dan gelen CSRF token'ı cookie'den çekmek için yardımcı fonksiyon
 function getCookie(name) {
   let cookieValue = null;
   if (document.cookie && document.cookie !== '') {
@@ -17,7 +17,6 @@ function getCookie(name) {
   return cookieValue;
 }
 
-// Axios instance'ı session/cookie tabanlı auth için yapılandırıyoruz.
 const api = axios.create({
   baseURL: 'http://localhost:8000/api/',
   headers: {
@@ -26,20 +25,20 @@ const api = axios.create({
   withCredentials: true, // Session/cookie bilgilerini gönderir.
 });
 
-// İstek öncesi interceptor
 api.interceptors.request.use(
   (config) => {
-    // Eğer token kullanmıyorsanız, Authorization kısmını kaldırabilirsiniz.
-    // Eğer kullanıcı hesabına ait ek bir token varsa ve AuthContext’te saklanıyorsa,
-    // bunu localStorage'dan veya başka yoldan alıp header'a ekleyebilirsiniz.
-    // Örneğin:
-    // const storedUser = localStorage.getItem('user');
-    // if (storedUser) {
-    //   const parsedUser = JSON.parse(storedUser);
-    //   if (parsedUser.token) {
-    //     config.headers.Authorization = `Bearer ${parsedUser.token}`;
-    //   }
-    // }
+    // AuthContext'te saklanan kullanıcı bilgisi (token) localStorage'de de tutuluyor.
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        if (parsedUser.token) {
+          config.headers.Authorization = `Bearer ${parsedUser.token}`;
+        }
+      } catch (error) {
+        console.error("User parse error:", error);
+      }
+    }
 
     // Django CSRF token'ı ekleme
     const csrftoken = getCookie('csrftoken');

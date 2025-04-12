@@ -35,10 +35,17 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+.tabs button:hover {
+  background-color: #2573a6;
+}
+
+/* Aktif sekme: metin rengi beyaz olmadan, koyu renk seçiliyor */
 .tabs button.active {
   background-color: #3498db;
+  color: #2c3e50; /* Net okunabilir koyu renk */
   font-weight: bold;
 }
 

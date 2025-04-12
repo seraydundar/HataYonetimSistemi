@@ -3,13 +3,13 @@ import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import api from '../services/api';
+import { FaHome, FaExclamationTriangle, FaUsers, FaComments, FaSignOutAlt } from 'react-icons/fa';
 import './Sidebar.css';
 
 const Sidebar = () => {
   const { user, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // Kullanıcı objesini ve role bilgisini konsola yazdırıyoruz:
   useEffect(() => {
     console.log('User object in Sidebar:', user);
     if (user) {
@@ -18,7 +18,6 @@ const Sidebar = () => {
     }
   }, [user]);
 
-  // Artık admin kontrolü user.role üzerinden yapılıyor:
   const isAdmin = user && user.role === 'admin';
 
   useEffect(() => {
@@ -41,7 +40,6 @@ const Sidebar = () => {
     }
   };
 
-  // Ana sayfaya yönlendirme
   const handleGoToHataYakalama = () => {
     navigate('/hata-yakalama');
   };
@@ -50,17 +48,22 @@ const Sidebar = () => {
     <nav className="sidebar">
       <ul>
         <li>
-          <button onClick={handleGoToHataYakalama}>Ana Sayfa</button>
+          <button onClick={handleGoToHataYakalama}>
+            <FaHome style={{ marginRight: '8px' }} />
+            Ana Sayfa
+          </button>
         </li>
         {isAdmin ? (
           <>
             <li>
               <button onClick={() => navigate('/hata-bildirim')}>
+                <FaExclamationTriangle style={{ marginRight: '8px' }} />
                 Hata Bildir
               </button>
             </li>
             <li>
-              <button onClick={() => navigate('/Kullanici-Yonetimi')}>
+              <button onClick={() => navigate('/kullanici-yonetimi')}>
+                <FaUsers style={{ marginRight: '8px' }} />
                 Kullanıcı Yönetimi
               </button>
             </li>
@@ -68,13 +71,24 @@ const Sidebar = () => {
         ) : (
           <li>
             <button onClick={() => navigate('/hata-bildirim')}>
+              <FaExclamationTriangle style={{ marginRight: '8px' }} />
               Hata Bildirim
             </button>
           </li>
         )}
+        {/* Yeni sohbet butonu */}
+        <li>
+          <button onClick={() => navigate('/chat')}>
+            <FaComments style={{ marginRight: '8px' }} />
+            Sohbet
+          </button>
+        </li>
         {user && (
           <li>
-            <button onClick={handleLogout}>Çıkış Yap</button>
+            <button onClick={handleLogout}>
+              <FaSignOutAlt style={{ marginRight: '8px' }} />
+              Çıkış Yap
+            </button>
           </li>
         )}
       </ul>

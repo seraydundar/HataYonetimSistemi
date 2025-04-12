@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
-      // is_superuser değerine göre role bilgisini belirleyin
+      // Token ve is_superuser bilgilerine göre role belirleniyor
       return {
         ...parsedUser,
         role: parsedUser.is_superuser ? 'admin' : 'user'
@@ -19,7 +19,6 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (user) {
-      // Her güncellemede role bilgisini is_superuser üzerinden hesaplayarak kaydet
       const normalizedUser = {
         ...user,
         role: user.is_superuser ? 'admin' : 'user'

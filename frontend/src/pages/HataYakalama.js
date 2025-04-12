@@ -1,5 +1,6 @@
 // src/pages/HataYonetimi.js
 import React, { useState, useEffect, useContext } from 'react';
+import { FaBug, FaFilter, FaSort, FaEllipsisH, FaEye, FaEdit, FaReply, FaTrashAlt, FaCalendarAlt, FaInfoCircle, FaExclamationCircle } from 'react-icons/fa';
 import './HataYakalama.css';
 import api from '../services/api';
 import { AuthContext } from '../contexts/AuthContext';
@@ -7,31 +8,27 @@ import { AuthContext } from '../contexts/AuthContext';
 const HataYonetimi = () => {
   const { user } = useContext(AuthContext);
   console.log('User from AuthContext:', user);
-  // Admin kontrolü: user.role "admin" veya user.isAdmin true ise.
   const isAdmin = user && (user.role === 'admin' || user.isAdmin === true);
   console.log('isAdmin computed:', isAdmin);
 
-  // Tüm hataların tutulduğu dizi
   const [errors, setErrors] = useState([]);
-  // Filtrelenmiş veya sıralanmış hataların tutulduğu dizi
   const [filteredErrors, setFilteredErrors] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Filtre alanları
-  const [tarih, setTarih] = useState(''); // boşsa tüm kayıtlar
-  const [hataDurumu, setHataDurumu] = useState(''); // boşsa tüm durumlar
-  const [oncelik, setOncelik] = useState('');  // boşsa tüm öncelikler
+  const [tarih, setTarih] = useState('');
+  const [hataDurumu, setHataDurumu] = useState('');
+  const [oncelik, setOncelik] = useState('');
   const [search, setSearch] = useState('');
 
-  // Modal ve düzenleme ile ilgili state'ler
+  // Modal ve düzenleme state'leri
   const [selectedError, setSelectedError] = useState(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  // Yeni: Yanıt modalinin kontrolü ve mesaj state'i
   const [isReplyModalOpen, setIsReplyModalOpen] = useState(false);
   const [replyMessage, setReplyMessage] = useState('');
 
-  // Düzenleme formu için state (başlangıçta boş, düzenle butonuna basınca doldurulacak)
+  // Düzenleme formu
   const [editForm, setEditForm] = useState({
     baslik: '',
     konu: '',
@@ -44,7 +41,6 @@ const HataYonetimi = () => {
     const fetchErrors = async () => {
       try {
         let url = 'errors/';
-        // Eğer kullanıcı admin değilse sadece kendi hataları
         if (user && user.role !== 'admin') {
           url = `errors/?userId=${user.userId}`;
         }
@@ -63,7 +59,7 @@ const HataYonetimi = () => {
     }
   }, [user]);
 
-  // Filtreleme fonksiyonu - artık search alanında hem hata başlığı, kullanıcı ismi hem de öncelik (oncelik) kontrol ediliyor.
+  // Filtreleme fonksiyonu
   const handleFilter = () => {
     const searchTerm = search.trim().toLowerCase();
     const filtered = errors.filter((item) => {
@@ -85,7 +81,7 @@ const HataYonetimi = () => {
     setFilteredErrors(filtered);
   };
 
-  // Tarihe göre sıralama
+  // Tarihe göre sıralama fonksiyonu
   const handleSort = () => {
     const sorted = [...filteredErrors].sort((a, b) => {
       const parseDate = (str) => {
@@ -102,7 +98,7 @@ const HataYonetimi = () => {
     alert('Diğer butonuna tıklandı! Burada ekstra işlemler yapabilirsiniz.');
   };
 
-  // Görüntüle butonu: seçilen hata detayını görmek için modal aç
+  // Modal işlemleri
   const handleView = (id) => {
     const err = errors.find((item) => item.id === id);
     if (err) {
@@ -111,7 +107,6 @@ const HataYonetimi = () => {
     }
   };
 
-  // Düzenle butonu: seçilen hatanın verilerini editForm state'ine aktar ve modal aç
   const handleEdit = (id) => {
     const err = errors.find((item) => item.id === id);
     if (err) {
@@ -127,7 +122,6 @@ const HataYonetimi = () => {
     }
   };
 
-  // Sil butonu
   const handleDelete = async (id) => {
     if (window.confirm(`ID ${id} numaralı hatayı silmek istediğinize emin misiniz?`)) {
       try {
@@ -142,13 +136,11 @@ const HataYonetimi = () => {
     }
   };
 
-  // Edit form alanlarındaki değişim için
   const handleEditChange = (e) => {
     const { name, value } = e.target;
     setEditForm(prev => ({ ...prev, [name]: value }));
   };
 
-  // Düzenleme formunu submit edip API'yi güncelle
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -165,7 +157,6 @@ const HataYonetimi = () => {
     }
   };
 
-  // Yanıt butonuna tıklanınca çağrılacak fonksiyon
   const handleReply = (id) => {
     const err = errors.find((item) => item.id === id);
     if (err) {
@@ -175,7 +166,6 @@ const HataYonetimi = () => {
     }
   };
 
-  // Yanıt gönderme işlemi
   const handleReplySubmit = async (e) => {
     e.preventDefault();
     try {
@@ -194,7 +184,10 @@ const HataYonetimi = () => {
 
   return (
     <div className="hata-container">
-      <h1 className="hata-header">Hata Yönetimi</h1>
+      <h1 className="hata-header">
+        <FaBug style={{ marginRight: '10px' }} />
+        Hata Yönetimi
+      </h1>
       <p className="hata-description">
         Sistemde oluşan hatalar aşağıda listelenmektedir.
       </p>
@@ -202,7 +195,10 @@ const HataYonetimi = () => {
       {/* Filtre Alanı */}
       <div className="filter-bar">
         <div>
-          <label htmlFor="tarih">Tarih:</label>
+          <label htmlFor="tarih">
+            <FaCalendarAlt style={{ marginRight: '5px' }} />
+            Tarih:
+          </label>
           <input
             type="text"
             id="tarih"
@@ -212,7 +208,10 @@ const HataYonetimi = () => {
           />
         </div>
         <div>
-          <label htmlFor="hataDurumu">Hata Durumu:</label>
+          <label htmlFor="hataDurumu">
+            <FaExclamationCircle style={{ marginRight: '5px' }} />
+            Hata Durumu:
+          </label>
           <select
             id="hataDurumu"
             value={hataDurumu}
@@ -225,7 +224,10 @@ const HataYonetimi = () => {
           </select>
         </div>
         <div>
-          <label htmlFor="oncelik">Öncelik:</label>
+          <label htmlFor="oncelik">
+            <FaInfoCircle style={{ marginRight: '5px' }} />
+            Öncelik:
+          </label>
           <select
             id="oncelik"
             value={oncelik}
@@ -239,7 +241,10 @@ const HataYonetimi = () => {
           </select>
         </div>
         <div>
-          <label htmlFor="search">Ara/Filtrele:</label>
+          <label htmlFor="search">
+            <FaFilter style={{ marginRight: '5px' }} />
+            Ara/Filtrele:
+          </label>
           <input
             type="text"
             id="search"
@@ -248,9 +253,18 @@ const HataYonetimi = () => {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <button className="filter-btn" onClick={handleFilter}>FİLTRELE</button>
-        <button className="sort-btn" onClick={handleSort}>SIRALA</button>
-        <button className="other-btn" onClick={handleOther}>Diğer</button>
+        <button className="filter-btn" onClick={handleFilter}>
+          <FaFilter style={{ marginRight: '5px' }} />
+          FİLTRELE
+        </button>
+        <button className="sort-btn" onClick={handleSort}>
+          <FaSort style={{ marginRight: '5px' }} />
+          SIRALA
+        </button>
+        <button className="other-btn" onClick={handleOther}>
+          <FaEllipsisH style={{ marginRight: '5px' }} />
+          Diğer
+        </button>
       </div>
 
       {/* Hata Tablosu */}
@@ -282,24 +296,26 @@ const HataYonetimi = () => {
                     {item.durum === 'Çözüldü' && <span className="status-label status-cozuldu">Çözüldü</span>}
                   </td>
                   <td>
-                    <button className="action-btn view-btn" onClick={() => handleView(item.id)}>Görüntüle</button>
-                    {(() => {
-                      console.log(`isAdmin for item ${item.id}:`, isAdmin);
-                      if (isAdmin) {
-                        return (
-                          <>
-                            <button className="action-btn edit-btn" onClick={() => handleEdit(item.id)}>
-                              Düzenle
-                            </button>
-                            <button className="action-btn reply-btn" onClick={() => handleReply(item.id)}>
-                              Yanıtla
-                            </button>
-                          </>
-                        );
-                      }
-                      return null;
-                    })()}
-                    <button className="action-btn delete-btn" onClick={() => handleDelete(item.id)}>Sil</button>
+                    <button className="action-btn view-btn" onClick={() => handleView(item.id)}>
+                      <FaEye style={{ marginRight: '5px' }} />
+                      Görüntüle
+                    </button>
+                    {isAdmin && (
+                      <>
+                        <button className="action-btn edit-btn" onClick={() => handleEdit(item.id)}>
+                          <FaEdit style={{ marginRight: '5px' }} />
+                          Düzenle
+                        </button>
+                        <button className="action-btn reply-btn" onClick={() => handleReply(item.id)}>
+                          <FaReply style={{ marginRight: '5px' }} />
+                          Yanıtla
+                        </button>
+                      </>
+                    )}
+                    <button className="action-btn delete-btn" onClick={() => handleDelete(item.id)}>
+                      <FaTrashAlt style={{ marginRight: '5px' }} />
+                      Sil
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -312,7 +328,10 @@ const HataYonetimi = () => {
       {isViewModalOpen && selectedError && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <h2>Hata Detayları</h2>
+            <h2>
+              <FaEye style={{ marginRight: '5px' }} />
+              Hata Detayları
+            </h2>
             <p><strong>Açıklama:</strong></p>
             <p>{selectedError.aciklama}</p>
             {selectedError.yanit && (
@@ -332,7 +351,10 @@ const HataYonetimi = () => {
       {isReplyModalOpen && selectedError && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <h2>Hata Yanıtı</h2>
+            <h2>
+              <FaReply style={{ marginRight: '5px' }} />
+              Hata Yanıtı
+            </h2>
             <form onSubmit={handleReplySubmit}>
               <div>
                 <label>Yanıt Mesajı:</label>
@@ -356,7 +378,10 @@ const HataYonetimi = () => {
       {isEditModalOpen && selectedError && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <h2>Hata Düzenle</h2>
+            <h2>
+              <FaEdit style={{ marginRight: '5px' }} />
+              Hata Düzenle
+            </h2>
             <form onSubmit={handleEditSubmit}>
               <div>
                 <label>Hata Başlığı:</label>

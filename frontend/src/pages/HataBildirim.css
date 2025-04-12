@@ -12,7 +12,38 @@
 .hata-bildirim-container h1 {
   text-align: center;
   margin-bottom: 1.5rem;
-  color: #444;
+  color: #303030;
+}
+
+/* Tab Başlıkları için Stil */
+.tab-header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.tab-header button {
+  background-color: #e0e0e0;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.tab-header button:hover {
+  background-color: #d0d0d0;
+}
+
+/* Aktif sekmede, arka plan rengini korurken yazı rengini koyu gri yapıyoruz */
+.tabs button.active {
+  background-color: #3498db;
+  color: #2c3e50; /* Net okunabilir koyu renk */
+  font-weight: bold;
 }
 
 /* Form ve liste bölümleri */
@@ -55,21 +86,19 @@
   font-size: 1rem;
 }
 
-/* Textarea için yeniden boyutlandırma */
 .form-group textarea {
   resize: vertical;
   min-height: 100px;
 }
 
-/* === Yeni: Buton grubunu yan yana göstermek için === */
+/* Button grubu */
 .button-group {
-  display: inline-flex;       /* veya display: flex */
+  display: inline-flex;
   align-items: center;
-  gap: 1rem;                  /* butonlar arasındaki boşluk */
+  gap: 1rem;
   margin-top: 1rem;
 }
 
-/* Submit ve geri butonlarının ortak stili */
 .button-group button {
   background-color: #007BFF;
   color: #fff;
@@ -84,17 +113,6 @@
 .button-group button:hover {
   background-color: #0056b3;
 }
-
-/* Eğer 'Geri' butonu farklı renkte olsun isterseniz: */
-/*
-.geri-buton {
-  background-color: #6c757d;
-}
-
-.geri-buton:hover {
-  background-color: #5a6268;
-}
-*/
 
 /* Tablo stilleri */
 .hata-listesi table {
@@ -127,6 +145,8 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
 }
 
 .hata-listesi button:hover {
@@ -136,106 +156,6 @@
 /* Radyo butonları */
 .form-group input[type="radio"] {
   margin-right: 0.5rem;
-}
-
-/* Genel kapsayıcı stil */
-.hata-bildirim-container {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 1rem;
-  font-family: Arial, sans-serif;
-  color: #333;
-  background-color: #fff;
-}
-
-/* Başlık stil */
-.hata-bildirim-container h1 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  color: #444;
-}
-
-/* Form ve liste bölümleri */
-.yeni-hata-formu,
-.hata-listesi {
-  background-color: #f9f9f9;
-  padding: 1.5rem;
-  border-radius: 8px;
-  margin-bottom: 2rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Form başlıkları */
-.yeni-hata-formu h2,
-.hata-listesi h2 {
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
-  color: #555;
-}
-
-/* Form grubu stilleri */
-.form-group {
-  margin-bottom: 1rem;
-}
-.form-group label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-
-/* Input, textarea, select stilleri */
-.form-group input[type="text"],
-.form-group textarea,
-.form-group select {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-.form-group textarea {
-  resize: vertical;
-  min-height: 100px;
-}
-
-/* Button grubu */
-.button-group {
-  display: inline-flex;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-.button-group button {
-  background-color: #007BFF;
-  color: #fff;
-  font-size: 1rem;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-.button-group button:hover {
-  background-color: #0056b3;
-}
-
-/* Tablo stilleri */
-.hata-listesi table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.hata-listesi th,
-.hata-listesi td {
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  text-align: left;
-}
-.hata-listesi th {
-  background-color: #007BFF;
-  color: #fff;
-}
-.hata-listesi tr:nth-child(even) {
-  background-color: #f2f2f2;
 }
 
 /* Modal stili */
@@ -251,6 +171,7 @@
   justify-content: center;
   z-index: 1000;
 }
+
 .modal-content {
   background-color: #fff;
   padding: 1.5rem;
@@ -259,12 +180,15 @@
   width: 90%;
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
+
 .detail-modal h2 {
   margin-bottom: 1rem;
 }
+
 .detail-modal p {
   margin: 0.5rem 0;
 }
+
 .detail-modal button {
   margin-top: 1rem;
   padding: 0.5rem 1rem;
@@ -275,6 +199,7 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
+
 .detail-modal button:hover {
   background-color: #0056b3;
 }
